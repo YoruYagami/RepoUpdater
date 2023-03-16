@@ -28,5 +28,5 @@ Change Permission
 Execute
 
 ```bash
-  sudo ./repoupdater.sh
+  ./repoupdater.sh
 ```
