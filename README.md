@@ -30,3 +30,9 @@ Execute
 ```bash
   ./repoupdater.sh
 ```
+
+Update only one repo
+
+```bash
+  ./repoupdater.sh /path/repo
+```
