@@ -5,36 +5,46 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-# get the repository directory path from the first command line argument
-REPO_DIRECTORY=$1
-
-# if no path is provided, use the current directory
-if [ -z "$REPO_DIRECTORY" ]; then
-    REPO_DIRECTORY="."
-fi
-
-# change directory to the specified repo directory
-cd $REPO_DIRECTORY
-
-# loop through each directory in the repo directory
-for d in */ ; do
-    # check if it's a directory and has a .git subdirectory
-    if [ -d "$d/.git" ]; then
-        # navigate into the directory and pull the latest changes
-        cd $d
-        echo -e "${GREEN}Updating $d...${NC}"
+function update_repo() {
+    local repo=$1
+    if [ -d "$repo/.git" ]; then
+        pushd "$repo" > /dev/null
+        echo -e "${GREEN}Updating $repo...${NC}"
         if git pull --quiet; then
             echo -e "${GREEN}Up to date!${NC}"
         else
             echo -e "${RED}Error updating!${NC}"
         fi
-        # navigate back to the repo directory
-        cd ..
-    elif [ -d "$d" ]; then
-        # navigate into the subdirectory and run the script recursively
-        echo "Navigating into $d..."
-        bash $(dirname $0)/$(basename $0) "$REPO_DIRECTORY/$d"
+        popd > /dev/null
     fi
-done
+}
 
-echo -e "${GREEN}All repositories updated!${NC}"
+function update_recursive() {
+    local dir=$1
+    pushd "$dir" > /dev/null
+
+    for d in */ ; do
+        if [ -d "$d/.git" ]; then
+            update_repo "$d"
+        elif [ -d "$d" ]; then
+            update_recursive "$(realpath "$d")"
+        fi
+    done
+
+    popd > /dev/null
+}
+
+REPO_DIRECTORY=$1
+SINGLE_REPO=$2
+
+if [ -z "$REPO_DIRECTORY" ]; then
+    REPO_DIRECTORY="."
+fi
+
+if [ -z "$SINGLE_REPO" ]; then
+    update_recursive "$(realpath "$REPO_DIRECTORY")"
+    echo -e "${GREEN}All repositories updated!${NC}"
+else
+    update_repo "$(realpath "$REPO_DIRECTORY/$SINGLE_REPO")"
+    echo -e "${GREEN}Selected repository updated!${NC}"
+fi
