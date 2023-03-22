@@ -6,6 +6,9 @@ The script first defines some colors for text output, and then loops through eac
 
 Once the script has finished updating all repositories (and subdirectories), it outputs a message indicating that all repositories have been updated.
 
+## Demo
+![Comp-1](https://user-images.githubusercontent.com/70035442/226977220-3f9c405a-325e-4969-ae39-d16e413bc61d.gif)
+
 
 ## Run Locally
 
