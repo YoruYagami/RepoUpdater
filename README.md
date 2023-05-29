@@ -1,41 +1,42 @@
 # RepoUpdater
 
-This is a bash script designed to update multiple git repositories located in a directory (or a subdirectory). It takes a path to a repository directory as an optional argument, and if no argument is provided, it defaults to the current directory.
+RepoUpdater is a bash script designed to automate the process of updating multiple git repositories at once. This is particularly useful when you have a large number of repositories that need to be kept up-to-date, such as when you are managing a big project or multiple projects.
 
-The script first defines some colors for text output, and then loops through each directory in the specified repository directory. For each directory, it checks if it's a git repository (i.e., has a .git subdirectory). If so, it navigates into the directory and pulls the latest changes from the remote repository. If the pull succeeds, it outputs a message indicating that the repository is up to date; if it fails, it outputs an error message.
+## Features
 
-Once the script has finished updating all repositories (and subdirectories), it outputs a message indicating that all repositories have been updated.
+- Update all repositories in a specified directory
+- Update a specific repository in a directory
+- Update repositories recursively in subdirectories
+- Force update even when there are uncommitted changes
+- Clean up repositories after update
+- Customizable timeout for git pull
+- Customizable logfile
+- Colorful output
+- Progress tracking
 
-## Demo
-![Comp-1](https://user-images.githubusercontent.com/70035442/226977220-3f9c405a-325e-4969-ae39-d16e413bc61d.gif)
+## Usage
 
-
-## Run Locally
+The general syntax is as follows:
 
 ```bash
-  git clone https://github.com/YoruYagami/repoupdater.git
+./repoupdater [-q] [-f] [-c] [-t timeout] [-l logfile] [repo_directory] [single_repo]
+
+Explanation
+-q - Quiet mode
+-f - Force update even when there are uncommitted changes
+-c - Clean up repositories after update
+-t timeout - Set custom timeout for git pull
+-l logfile - Set custom logfile
+repo_directory - The directory that contains the repositories you want to update
+single_repo - The specific repository you want to update
 ```
+Please note that if repo_directory or single_repo is not specified, you will be prompted to enter it.
 
-Go to the project directory
-
-```bash
-  cd repoupdater
-```
-
-Change Permission
+## Installation
 
 ```bash
-  chmod +x repoupdater.sh
-```
-
-Execute
-
-```bash
-  ./repoupdater.sh
-```
-
-Update only one repo
-
-```bash
-  ./repoupdater.sh /path/repo
+  git clone https://github.com/YoruYagami/RepoUpdater.git
+  cd RepoUpdater
+  sudo chmod +x repoupdater.sh
+  sudo ./repoupdater.sh
 ```
